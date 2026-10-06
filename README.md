@@ -37,3 +37,23 @@ Preloader → pinned WebGL hero (particle voice orb, 360vh scroll) → word-by-w
 statement → swipeable agent cards → velocity-reactive client marquee → metrics
 accordion with counters → capabilities with scroll-rotated 3D cubes → CTA with
 cursor-following button → footer with "continue to scroll" loop.
+
+## Dev tools (`tools/`)
+
+- `tools/logos/` — client-logo pipeline. `source/` holds the original logo files
+  (and the generated text logos); `python3 tools/logos/mono.py` rebuilds the
+  all-white / all-black `public/assets/clients/*.webp` set. The `*.jsonl` files
+  are the imagegen prompts used for the generated text logos.
+- `tools/artifact/mkartifact.py` — after `npm run build`, packages `dist/` as a
+  single page with images embedded (for the claude.ai artifact viewer) into
+  `tools/artifact/out/` (gitignored).
+- `tools/qa/*.mjs` — Playwright checks run against a running preview
+  (`npx vite preview`): readability/contrast at scroll stops (`readcheck`),
+  section snap (`snaptest`), card layout (`cards`), client-logo loading
+  (`clients`, `imgcheck`), wordmark morph screenshots (`word`), logo trace
+  (`logocheck`). Needs `npm i -D playwright` (or a global install).
+
+  ```bash
+  npx vite preview --port 4173 &
+  node tools/qa/readcheck.mjs http://localhost:4173/ out/read
+  ```
